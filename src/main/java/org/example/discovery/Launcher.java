@@ -11,12 +11,8 @@ import org.example.discovery.model.TraceMessage;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.management.JMException;
-import java.util.Date;
-import java.util.Properties;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class Launcher {
     static final Log logger = LogFactory.getLog(Launcher.class);
@@ -98,6 +94,7 @@ public class Launcher {
         final Subscriber pingSubscriber = launcher.createSubscriber(Launcher.TOPIC_PING);
         final Subscriber pongSubscriber = launcher.createSubscriber(Launcher.TOPIC_PONG);
 
+        ConcurrentHashMap<String, Long> statics = new ConcurrentHashMap<>();
 
         pingSubscriber.registerListener((revMessage)->{
             try{
@@ -140,6 +137,10 @@ public class Launcher {
                         if(pong.getLastSender().equals(Blocker.id)) return;
 
                         Util.printLog(new Date(), Blocker.id, MSG_RX, MSG_PONG, pong.getSeq(), pong.getLastSender());
+
+                        if(pong.getOriginSender().equals(Blocker.id)){
+                            statics.put(pong.getLastSender(), (new Date().getTime()) - pong.getTimestamp());
+                        }
                     }
                 }
             } catch (Exception e){
@@ -177,6 +178,21 @@ public class Launcher {
         }
         Future finalPingFuture = pingFuture;
         scheduledExecutorService.schedule(()->{
+            Integer[] ranks = new Integer[statics.size()];
+
+            for(int i = 0; i< ranks.length; i++) ranks[i] = i;
+            List<String> keys = new ArrayList<>();
+            List<Long> values = new ArrayList<>();
+
+            for(Map.Entry<String,Long> entry : statics.entrySet()){
+                keys.add(entry.getKey());
+                values.add(entry.getValue());
+            }
+
+            Arrays.sort(ranks, (a,b)->{
+                return values.get(a).intValue() - values.get(b).intValue();
+            });
+
             try{
                 if(finalPingFuture != null) finalPingFuture.cancel(false);
                 scheduledExecutorService.shutdown();
@@ -187,6 +203,10 @@ public class Launcher {
                 launcher.disconnect();
             } catch (Exception e){
                 e.printStackTrace();
+            }
+            logger.info("Optimized Peer List");
+            for(int i = 0; i < ranks.length; i++){
+                logger.info(i+" > "+keys.get(ranks[i]) + " = "+values.get(ranks[i])+" ms");
             }
             logger.info("System Terminated");
         }, launcher.getTimeout(), TimeUnit.SECONDS);

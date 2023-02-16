@@ -6,13 +6,13 @@
     </Console>
   </Appenders>
   <Loggers>
-      <Logger name="org.example.discovery.model" level="debug" additivity="false">
-          <AppenderRef ref="Console"/>
-      </Logger>
+<!--      <Logger name="org.example.discovery.model" level="info" additivity="false">-->
+<!--          <AppenderRef ref="Console"/>-->
+<!--      </Logger>-->
     <Logger name="org.example.discovery" level="info" additivity="false">
       <AppenderRef ref="Console"/>
     </Logger>
-    <Logger name="com.solacesystems" level="info" additivity="false">
+    <Logger name="com.solacesystems" level="off" additivity="false">
       <AppenderRef ref="Console"/>
     </Logger>
     <Root level="info">
