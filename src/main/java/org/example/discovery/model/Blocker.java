@@ -1,9 +1,10 @@
-package org.example.discovery.org.example.discovery;
+package org.example.discovery.model;
 
 import com.solacesystems.jms.SolConnectionFactory;
 import com.solacesystems.jms.SolJmsUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.example.discovery.LoadProperties;
 
 import javax.jms.Connection;
 import java.util.Properties;
@@ -48,6 +49,10 @@ public class Blocker {
         return connection != null;
     }
 
+    //only for listener
+    public void startSubscription() throws Exception{
+        if(this.isConnected) connection.start();
+    }
 
     //disconnect의 결과는 알수 없다
     public void disconnect(){

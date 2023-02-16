@@ -2,12 +2,10 @@ package org.example.discovery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.example.discovery.org.example.discovery.Blocker;
+import org.example.discovery.model.Blocker;
 
 import javax.management.JMException;
-import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 public class Launcher {
     static final Log logger = LogFactory.getLog(Launcher.class);

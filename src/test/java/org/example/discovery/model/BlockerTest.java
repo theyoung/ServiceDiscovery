@@ -1,11 +1,10 @@
-package org.example.discovery.org.example.discovery;
+package org.example.discovery.model;
 
+import org.example.discovery.model.Blocker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class BlockerTest {
     /*
@@ -31,4 +30,5 @@ solace.java.client-password=3giqq3h6f6jrgo34hhcc4v13mu
         Assertions.assertTrue(blocker.connect());
         blocker.disconnect();
     }
+
 }
