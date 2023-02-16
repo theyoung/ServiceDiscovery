@@ -43,6 +43,8 @@ public class Launcher {
     public void stopAll(){
         this.blocker.disconnect();
     }
+
+
     public static void main(String[] args) throws Exception {
         Launcher laun = Launcher.getLauncher();
         laun.start(args, "config.properties");

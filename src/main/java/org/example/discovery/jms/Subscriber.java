@@ -15,8 +15,9 @@ public class Subscriber extends Messenger{
     }
 
     private void createSubscriber() throws JMSException {
-        this.consumer = this.session.createConsumer(this.topic);
-
+        //내가 보낸 메시지를 무시한다. 다만 queued 되어 있는 메시지는 받게 된다.
+        this.consumer = this.session.createDurableSubscriber(this.topic,this.topic.getTopicName(),"",true);
+//        this.consumer = this.session.createConsumer(this.topic);
     }
     public boolean initSubscriber(boolean transacted, int ackmode) throws Exception{
         this.setSession(transacted, ackmode);
@@ -26,7 +27,7 @@ public class Subscriber extends Messenger{
         return this.consumer != null;
     }
 
-    public void registeListener(MessageListener listener) throws JMSException{
+    public void registerListener(MessageListener listener) throws JMSException{
         if(this.consumer == null) throw new JMSException("Subscriber Not Init Yet");
         this.consumer.setMessageListener(listener);
     }
@@ -37,28 +38,4 @@ public class Subscriber extends Messenger{
         super.disconnect();
     }
 
-    public void test() throws Exception {
-        Session session = this.connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Topic topic = session.createTopic("myapp/ping");
-        MessageConsumer messageConsumer = session.createConsumer(topic);
-
-        messageConsumer.setMessageListener((Message message)->{
-            try{
-                logger.debug("Ping Received Successes!");
-                if(message instanceof MapMessage){
-
-                    MapMessage map = (MapMessage) message;
-                    String sender = map.getString("sender");
-                    String msg = map.getString("msg");
-                    String seq = map.getString("seq");
-                    logger.debug("Ping Received Successes!" + seq + " " + sender + " " + msg);
-
-                }
-            } catch (JMSException exception){
-                exception.printStackTrace();
-            }
-        });
-        this.connection.start();
-
-    }
 }

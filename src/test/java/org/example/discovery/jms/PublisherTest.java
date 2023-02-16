@@ -1,9 +1,6 @@
 package org.example.discovery.jms;
 
 
-import org.example.discovery.jms.Blocker;
-import org.example.discovery.jms.Publisher;
-import org.example.discovery.jms.Subscriber;
 import org.example.discovery.model.PingPong;
 import org.example.discovery.model.TraceMessage;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +36,7 @@ class PublisherTest {
 
         Subscriber subscriberPing = new Subscriber(this.blocker.connection, "myapp/ping");
         subscriberPing.initSubscriber(false,Session.AUTO_ACKNOWLEDGE);
-        subscriberPing.registeListener((revMessage)->{
+        subscriberPing.registerListener((revMessage)->{
             try{
                 if(revMessage instanceof MapMessage){
                     MapMessage msg = (MapMessage) revMessage;
@@ -61,7 +58,7 @@ class PublisherTest {
 
         Subscriber subscriberPong = new Subscriber(this.blocker.connection, "myapp/pong");
         subscriberPong.initSubscriber(false,Session.AUTO_ACKNOWLEDGE);
-        subscriberPong.registeListener((revMessage)->{
+        subscriberPong.registerListener((revMessage)->{
             try{
                 if(revMessage instanceof MapMessage){
                     MapMessage msg = (MapMessage) revMessage;

@@ -4,6 +4,7 @@ import com.solacesystems.jms.SolConnectionFactory;
 import com.solacesystems.jms.SolJmsUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.example.discovery.Util;
 
 import javax.jms.Connection;
 import java.util.Properties;
@@ -14,6 +15,7 @@ public class Blocker {
     public static final String USER = "solace.java.client-username";
     public static final String PW = "solace.java.client-password";
     public static final Log logger = LogFactory.getLog(Blocker.class);
+    public final String id;
 
     Properties props;
     public Connection connection;
@@ -21,6 +23,7 @@ public class Blocker {
 
     public Blocker(Properties properties) {
         this.props = properties;
+        this.id = Util.randomName();
     }
 
     public boolean isConnected(){
