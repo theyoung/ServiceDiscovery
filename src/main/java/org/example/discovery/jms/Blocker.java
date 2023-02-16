@@ -5,9 +5,13 @@ import com.solacesystems.jms.SolJmsUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.example.discovery.Util;
+import org.example.discovery.model.PingPong;
 
 import javax.jms.Connection;
+import javax.jms.Session;
+import java.util.Date;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Blocker {
     public static final String HOST = "solace.java.host";
@@ -15,19 +19,37 @@ public class Blocker {
     public static final String USER = "solace.java.client-username";
     public static final String PW = "solace.java.client-password";
     public static final Log logger = LogFactory.getLog(Blocker.class);
-    public final String id;
+    public static final String id = Util.randomName();
+    public static AtomicInteger seq = new AtomicInteger(0);
 
     Properties props;
+
+    //test때문에 public으로 한다. 향후 private로 변경해야 한다.
     public Connection connection;
     volatile boolean isConnected = false;
 
     public Blocker(Properties properties) {
         this.props = properties;
-        this.id = Util.randomName();
     }
 
     public boolean isConnected(){
         return this.isConnected;
+    }
+
+    public Publisher createPublisher(String topic) throws Exception{
+        Publisher publisher = new Publisher(this.connection, topic);
+        publisher.initPublisher(false, Session.AUTO_ACKNOWLEDGE);
+        return publisher;
+    }
+
+    public Subscriber createSubscriber(String topic) throws Exception{
+        Subscriber subscriber = new Subscriber(this.connection, topic);
+        subscriber.initSubscriber(false,Session.AUTO_ACKNOWLEDGE);
+        return subscriber;
+    }
+
+    public void subscribeStart() throws Exception{
+        this.connection.start();
     }
 
     public boolean connect() throws Exception {
