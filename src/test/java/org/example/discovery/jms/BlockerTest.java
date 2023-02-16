@@ -1,6 +1,6 @@
-package org.example.discovery.model;
+package org.example.discovery.jms;
 
-import org.example.discovery.model.Blocker;
+import org.example.discovery.jms.Blocker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

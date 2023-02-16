@@ -2,7 +2,7 @@ package org.example.discovery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.example.discovery.model.Blocker;
+import org.example.discovery.jms.Blocker;
 
 import javax.management.JMException;
 import java.util.Properties;

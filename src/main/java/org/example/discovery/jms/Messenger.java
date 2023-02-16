@@ -1,4 +1,4 @@
-package org.example.discovery.model;
+package org.example.discovery.jms;
 
 import javax.jms.*;
 

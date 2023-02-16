@@ -1,23 +1,22 @@
-package org.example.discovery.model;
+package org.example.discovery.jms;
 
 import com.solacesystems.jms.SolConnectionFactory;
 import com.solacesystems.jms.SolJmsUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.example.discovery.LoadProperties;
 
 import javax.jms.Connection;
 import java.util.Properties;
 
 public class Blocker {
-    static final String HOST = "solace.java.host";
-    static final String VPN = "solace.java.msg-vpn";
-    static final String USER = "solace.java.client-username";
-    static final String PW = "solace.java.client-password";
-    static final Log logger = LogFactory.getLog(Blocker.class);
+    public static final String HOST = "solace.java.host";
+    public static final String VPN = "solace.java.msg-vpn";
+    public static final String USER = "solace.java.client-username";
+    public static final String PW = "solace.java.client-password";
+    public static final Log logger = LogFactory.getLog(Blocker.class);
 
     Properties props;
-    Connection connection;
+    public Connection connection;
     volatile boolean isConnected = false;
 
     public Blocker(Properties properties) {

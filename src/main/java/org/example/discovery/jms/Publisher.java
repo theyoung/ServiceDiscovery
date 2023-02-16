@@ -1,4 +1,6 @@
-package org.example.discovery.model;
+package org.example.discovery.jms;
+
+import org.example.discovery.model.MessageDTO;
 
 import javax.jms.*;
 
@@ -22,8 +24,7 @@ public class Publisher extends Messenger{
 
     public void sendMessage(MessageDTO message) throws Exception{
         if(this.producer == null) throw new JMSException("Producer Not Init Yet");
-//        Message msg = message.getMessage(this.session);
-        Message msg = this.session.createTextMessage("abc");
+        Message msg = message.getMessage(this.session);
 
         this.producer.send(msg, DeliveryMode.PERSISTENT,Message.DEFAULT_PRIORITY, Message.DEFAULT_TIME_TO_LIVE);
     }
