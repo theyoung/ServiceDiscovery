@@ -114,7 +114,8 @@ public class Launcher {
                         int seq = pin.getSeq();
                         pong.setSeq(seq);
                         pong.setMessage(MSG_PONG);
-                        pong.setTimestamp(new Date().getTime());
+                        //pong에서 최종 적으로 RTT 계산을 한다
+                        pong.setTimestamp(pin.getTimestamp());
                         pong.setOriginSender(pin.getOriginSender());
                         pong.setLastSender(Blocker.id);
 

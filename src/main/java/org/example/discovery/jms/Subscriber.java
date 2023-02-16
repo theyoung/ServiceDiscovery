@@ -16,7 +16,10 @@ public class Subscriber extends Messenger{
 
     private void createSubscriber() throws JMSException {
         //내가 보낸 메시지를 무시한다. 다만 queued 되어 있는 메시지는 받게 된다.
-//        this.consumer = this.session.createDurableSubscriber(this.topic,this.topic.getTopicName(),"",true);
+        this.consumer = this.session.createDurableSubscriber(this.topic,this.topic.getTopicName(),"",true);
+    }
+
+    private void createSubscriberNonDurable() throws JMSException {
         this.consumer = this.session.createConsumer(this.topic);
     }
     public boolean initSubscriber(boolean transacted, int ackmode) throws Exception{
