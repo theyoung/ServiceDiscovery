@@ -108,7 +108,6 @@ public class Launcher {
                         PingPong pin = PingPong.getPingPongByMapMessage(msg);
                         //동일 송신자는 처리하지 않는다.
                         if(pin.getLastSender().equals(Blocker.id)) return;
-                        System.out.println(pin.getLastSender() + " ********* " + Blocker.id);
                         Util.printLog(new Date(), Blocker.id, MSG_RX, MSG_PING, pin.getSeq(), pin.getLastSender());
 
 
