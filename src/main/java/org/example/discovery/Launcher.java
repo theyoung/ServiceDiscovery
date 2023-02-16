@@ -106,7 +106,9 @@ public class Launcher {
                     String clazz = msg.getString("clazz");
                     if(PingPong.class.getName().equals(clazz)) {
                         PingPong pin = PingPong.getPingPongByMapMessage(msg);
-
+                        //동일 송신자는 처리하지 않는다.
+                        if(pin.getLastSender().equals(Blocker.id)) return;
+                        System.out.println(pin.getLastSender() + " ********* " + Blocker.id);
                         Util.printLog(new Date(), Blocker.id, MSG_RX, MSG_PING, pin.getSeq(), pin.getLastSender());
 
 
@@ -121,7 +123,7 @@ public class Launcher {
 
                         TraceMessage<PingPong> pongMessage = new TraceMessage<>(PingPong.class, pong);
                         pongPublisher.sendMessage(pongMessage);
-                        Util.printLog(new Date(), Blocker.id, MSG_TX, MSG_PING, seq, Blocker.id);
+                        Util.printLog(new Date(), Blocker.id, MSG_TX, MSG_PONG, seq, Blocker.id);
                     }
                 }
             } catch (Exception e){
@@ -135,8 +137,10 @@ public class Launcher {
                     MapMessage msg = (MapMessage) revMessage;
                     String clazz = msg.getString("clazz");
                     if(PingPong.class.getName().equals(clazz)){
-                        PingPong pin = PingPong.getPingPongByMapMessage(msg);
-                        Util.printLog(new Date(), Blocker.id, MSG_RX, MSG_PONG, pin.getSeq(), pin.getLastSender());
+                        PingPong pong = PingPong.getPingPongByMapMessage(msg);
+                        if(pong.getLastSender().equals(Blocker.id)) return;
+
+                        Util.printLog(new Date(), Blocker.id, MSG_RX, MSG_PONG, pong.getSeq(), pong.getLastSender());
                     }
                 }
             } catch (Exception e){

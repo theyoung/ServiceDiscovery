@@ -25,7 +25,7 @@ public class Subscriber extends Messenger{
     public boolean initSubscriber(boolean transacted, int ackmode) throws Exception{
         this.setSession(transacted, ackmode);
         this.setTopic();
-        this.createSubscriber();
+        this.createSubscriberNonDurable();
 
         return this.consumer != null;
     }

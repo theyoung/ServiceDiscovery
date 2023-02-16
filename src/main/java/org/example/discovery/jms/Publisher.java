@@ -34,7 +34,7 @@ public class Publisher extends Messenger{
     @Override
     public void disconnect() throws Exception {
         //기본적으로 Durable Mode임으로 comment 처리함
-//        if(isConnected && session != null) session.unsubscribe(this.topic.getTopicName());
+        if(isConnected && session != null) session.unsubscribe(this.topic.getTopicName());
 
         isConnected = false;
         if(producer != null) producer.close();
